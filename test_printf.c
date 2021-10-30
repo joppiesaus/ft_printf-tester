@@ -83,7 +83,7 @@ int	do_diff(int fd, int a, int b)
 	}
 	if (strncmp(buf_a, buf_b, BUF_SIZE) != 0)
 	{
-		eprintf("FAIL:\n\nprintf:\t%s\n\nft_printf:\t%s\n\n", buf_a, buf_b);
+		eprintf("FAIL:\n\nprintf:    %s\nft_printf: %s\n\n", buf_a, buf_b);
 		return (1);
 	}
 	eprintf("OK\n");
@@ -145,6 +145,12 @@ int	main()
 	PTEST("%c", -1);
 	PTEST("sdf sdfsdf sd %c\t\v%c", 'h', 'a');
 	PTEST("%c%c\n", '\0', '~');
+
+	SECTION_PRINT("strings(%s)");
+	PTEST("hello, %s\n", "world");
+	PTEST("%s%s", "h", "\n");
+	eprintf("NOTE: next test is implementation dependent, only should fail if nullptr is not accounted for.\n");
+	PTEST("super cool string: %s", (char *)0);
 
 	close(fd);
 	eprintf("-----------------\n");
