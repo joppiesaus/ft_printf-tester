@@ -133,12 +133,16 @@ int	main()
 	PTEST("HALLO");
 	PTEST("HELLO DOES THIS WORK?");
 	PTEST("unexpected \0, what will happen?");
+
 	SECTION_PRINT("% screwery");
 	PTEST("%%\n");
 	PTEST("%");
 	PTEST("%%%%%%\n");
 	PTEST("%%%%%%%");
 	PTEST("%%%%%%%\n");
+
+	//SECTION_PRINT("basic invalid arguments");
+	//PTEST("hoi %S\n", "hi");
 
 	SECTION_PRINT("%c stuff");
 	PTEST("%c", 'h');
@@ -149,6 +153,7 @@ int	main()
 	SECTION_PRINT("strings(%s)");
 	PTEST("hello, %s\n", "world");
 	PTEST("%s%s", "h", "\n");
+	PTEST("%s%s\n", "sdfd\0fs\0", "asdfasdf");
 	eprintf("NOTE: next test is implementation dependent, only should fail if nullptr is not accounted for.\n");
 	PTEST("super cool string: %s", (char *)0);
 
