@@ -1,5 +1,3 @@
-#include "libftprintf.h"
-
 #include <stdio.h> /* printf, obviously */
 #include <stdlib.h> /* exit */
 #include <string.h> /* memset, strncmp */
@@ -7,6 +5,8 @@
 #include <unistd.h> /* dup, read */
 #include <sys/stat.h> /* redir */
 #include <fcntl.h> /* fchmod etc. */
+
+int	ft_printf(const char *format, ...);
 
 #define EXIT_WHEN_FAIL (0) // set to 1 if you want the test to stop when it fails.
 #define TEST_OUTPUT_FILE_NAME ("output.txt") // File name to write results to

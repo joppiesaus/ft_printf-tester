@@ -11,7 +11,7 @@ $(NAME): $(DEPS) $(FT_PRINTF_PATH)/libftprintf.a
 	$(CC) $(CFLAGS) -I$(FT_PRINTF_PATH) -L$(FT_PRINTF_PATH) -lftprintf $(DEPS) -o $(NAME)
 
 # Recursive make, sigh...
-$(FT_PRINTF_PATH)/libftprintf.a: $(FT_PRINTF_PATH)/libftprintf.h $(wildcard $(FT_PRINTF_PATH)/*.c)
+$(FT_PRINTF_PATH)/libftprintf.a: $(wildcard $(FT_PRINTF_PATH)/*.h) $(wildcard $(FT_PRINTF_PATH)/*.c)
 	$(MAKE) -C $(FT_PRINTF_PATH)
 
 clean:
