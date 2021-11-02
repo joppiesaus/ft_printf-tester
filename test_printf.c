@@ -16,7 +16,7 @@ int	ft_printf(const char *format, ...);
 
 #define eprintf(...) fprintf(stderr, __VA_ARGS__)
 
-// prints a kind messages, then exits
+// prints a kind message, then exits
 void	m_exit()
 {
 	eprintf("Mission failed, we'll get 'em next time!\n");
@@ -152,9 +152,32 @@ int	main()
 	SECTION_PRINT("strings(%s)");
 	PTEST("hello, %s\n", "world");
 	PTEST("%s%s", "h", "\n");
-	PTEST("%s%s\n", "sdfd\0fs\0", "asdfasdf");
+	PTEST("%s%s\n", "sdfd\0fs", "asdfasdf");
+	PTEST("hello, %s\n", "\0");
 	eprintf("NOTE: next test is implementation dependent, only should fail if nullptr is not accounted for.\n");
 	PTEST("super cool string: %s", (char *)0);
+
+	SECTION_PRINT("signed integers(%d and %i)");
+	PTEST("%d\n", 3450);
+	PTEST("%d\n", -3450);
+	PTEST("%d\n", 0x7fffffff);
+	PTEST("%d\n", 0x80000000);
+	PTEST("%d\n", 0);
+	PTEST("%d\n", -1);
+	PTEST("%i\n", 3450);
+	PTEST("%i\n", -3450);
+	PTEST("%i\n", 0x7fffffff);
+	PTEST("%i\n", 0x80000000);
+	PTEST("%i\n", 0);
+	PTEST("%i\n", -1);
+	PTEST("%isadfsadf%d", -1, 34);
+	PTEST("\tadswfdsf%ifdf%ddfdfsf", 0, 0xfa1afe1);
+
+	/*
+	PTEST("asdf asdf asdf%pdfdfsf%dddfsdfsdfd%isadf\n", &fd, fd, 345);
+	PTEST("%u\n", 0x80000001);
+	PTEST("%x%X\n", 0x73434, -234946);
+	 */
 
 	close(fd);
 	eprintf("-----------------\n");
