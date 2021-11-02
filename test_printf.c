@@ -108,7 +108,6 @@ void	check_diff(int fd, int a, int b)
 {\
 	eprintf("line %-5d: ", line);\
 	a = printf(__VA_ARGS__);\
-	fflush(stdout);\
 	\
 	b = ft_printf(__VA_ARGS__);\
 	fflush(stdout);\
