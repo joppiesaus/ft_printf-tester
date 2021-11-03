@@ -173,7 +173,6 @@ int	main()
 	PTEST("%X", 0xbafefe);
 	PTEST("%x  %X ", 0xba, 0xef);
 
-
 	SECTION_PRINT("signed integers(%d and %i)");
 	PTEST("%d\n", 3450);
 	PTEST("%d\n", -3450);
@@ -189,6 +188,13 @@ int	main()
 	PTEST("%i\n", -1);
 	PTEST("%isadfsadf%d", -1, 34);
 	PTEST("\tadswfdsf%ifdf%ddfdfsf", 0, 0xfa1afe1);
+
+	SECTION_PRINT("unsigned integers(%u)");
+	PTEST("%u", -1);
+	PTEST("%u", 0);
+	PTEST("%u", 0x7fffffff);
+	PTEST("%u", 2222222222);
+	PTEST("%uuuuu%uuuuuuuujjsdf%ufsdf\n", 2222222222, 1, -4545);
 
 	SECTION_PRINT("BONUS BONUS BONUS BONUS!!!");
 	SECTION_PRINT("% d and %+d");
