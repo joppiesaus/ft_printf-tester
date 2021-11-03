@@ -63,15 +63,6 @@ int	do_diff(int fd, int a, int b)
 		m_fatal_error("lseek");
 	}
 
-	i = read(fd, buf_a, a);
-	if (i == -1)
-	{
-		m_fatal_error("read");
-	}
-	else if (i != a)
-	{
-		eprintf("expected read failed: expected %d, got %zd\n", a, i);
-	}
 	i = read(fd, buf_b, b);
 	if (i == -1)
 	{
@@ -80,6 +71,15 @@ int	do_diff(int fd, int a, int b)
 	else if (i != b)
 	{
 		eprintf("expected read failed: expected %d, got %zd\n", b, i);
+	}
+	i = read(fd, buf_a, a);
+	if (i == -1)
+	{
+		m_fatal_error("read");
+	}
+	else if (i != a)
+	{
+		eprintf("expected read failed: expected %d, got %zd\n", a, i);
 	}
 	if (strncmp(buf_a, buf_b, BUF_SIZE) != 0)
 	{
