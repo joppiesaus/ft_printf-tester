@@ -157,6 +157,23 @@ int	main()
 	eprintf("NOTE: next test is implementation dependent, only should fail if nullptr is not accounted for.\n");
 	PTEST("super cool string: %s", (char *)0);
 
+	SECTION_PRINT("pointers(%p)");
+	PTEST("cool pointer: %p\n", &fd);
+	PTEST("cool pointer: %p\n", (void *)0);
+	PTEST("%p\n", (void *)-1);
+	PTEST("a:%pb:%p", &a, &b);
+
+	SECTION_PRINT("hexadecimal(%x %X))");
+	PTEST("%x", -1);
+	PTEST("%x", 0);
+	PTEST("%x", 0xfa1afe);
+	PTEST("%x%x", 128998, 0);
+	PTEST("%X", -1);
+	PTEST("%X", 0);
+	PTEST("%X", 0xbafefe);
+	PTEST("%x  %X ", 0xba, 0xef);
+
+
 	SECTION_PRINT("signed integers(%d and %i)");
 	PTEST("%d\n", 3450);
 	PTEST("%d\n", -3450);
@@ -172,6 +189,23 @@ int	main()
 	PTEST("%i\n", -1);
 	PTEST("%isadfsadf%d", -1, 34);
 	PTEST("\tadswfdsf%ifdf%ddfdfsf", 0, 0xfa1afe1);
+
+	SECTION_PRINT("BONUS BONUS BONUS BONUS!!!");
+	SECTION_PRINT("% d and %+d");
+	PTEST("% d% d", 24, -24);
+	PTEST("%+d%+d", 24, -24);
+	PTEST("% +d%+ d", 2, 2);
+	PTEST("%+ dfsdfn%+ i\n", 24, -24);
+	PTEST("___%++++    ++++ ifsdfn%+ + +i", 0x3423424, -24);
+	PTEST("mmmmmm\r\7%++++    ++++ ifsdfn%+ + +i", -0x3423424, 54);
+
+	SECTION_PRINT("# hash flag(prepending 0x)");
+	PTEST("%#x", 12345);
+	PTEST("%#X", 12354);
+	PTEST("%#x", 0);
+	PTEST("%#x%X", 1, 0xbaaaa);
+	PTEST("     ffsdf%#################Xdffff%##############xdfddfsdfsdfs", 0xfe012c, 0xfaef);
+
 
 	/*
 	PTEST("asdf asdf asdf%pdfdfsf%dddfsdfsdfd%isadf\n", &fd, fd, 345);
