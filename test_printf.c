@@ -1,3 +1,5 @@
+/* TODO: mandatory part, actually correct result, compact the tester */
+
 #include <stdio.h> /* printf, obviously */
 #include <stdlib.h> /* exit */
 #include <string.h> /* memset, strncmp */
@@ -266,6 +268,7 @@ int	main()
 	PTEST("% 05d", 5);
 	PTEST("%0#7x", 0xaef);
 	PTEST("%#07X", 0x2a7);
+	PTEST("%025p", &fd);
 
 	close(fd);
 	eprintf("-----------------\n");
