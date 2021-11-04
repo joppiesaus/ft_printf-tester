@@ -224,12 +224,48 @@ int	main()
 	PTEST("%5d", 2);
 	PTEST("%1d", 2);
 	PTEST("%0d", 2);
-	PTEST("%256d", 2);
+	PTEST("%256d", 244);
 	PTEST("%5d", 22222222);
 	PTEST("%5s", "hi");
 	PTEST("%5s", "haiiii!!! UwU");
+	PTEST("%3c", 0);
+
+	SECTION_PRINT("basic prepended min. field width(%-5s))");
+	PTEST("%-5d", 2);
+	PTEST("%-1d", 2);
+	PTEST("%-0d", 2);
+	PTEST("%-256d", 244);
+	PTEST("%-5d", 22222222);
+	PTEST("%-5s", "hi");
+	PTEST("%-5s", "haiiii!!! UwU");
+	PTEST("%-3c", 0);
+
+	SECTION_PRINT("min. field width with %+d and % d and %#x");
 	PTEST("%+5d, %+5d", 22, -22);
-	PTEST("% 5d", 22);
+	PTEST("% 4d", 22);
+	PTEST("%#5x%#5X", 33, 0x4f);
+	PTEST("%#5x%#5X", 0xfefefefe, 0x4ffffff);
+	PTEST("%+-5d, %+-5d", 22, -22);
+	PTEST("% -5d", 22);
+	PTEST("%#-5x%#-5X", 33, 0x4f);
+	PTEST("%#-5x%#-5X", 0xfefefefe, 0x4ffffff);
+
+	SECTION_PRINT("min. field width with 0 flag");
+	PTEST("%05d", 5);
+	PTEST("%05d", 512);
+	PTEST("%0000005s", "hi");
+	PTEST("%0-5d", 5);
+	PTEST("%-05d", 512);
+	PTEST("%0000-05s", "hi");
+
+	/* this took me a while to fix for my own printf... xD */
+	SECTION_PRINT("min. field width with 0 and %+ d or %x");
+	PTEST("% 05d", 5);
+	PTEST("%0+5d", 51);
+	PTEST("%+05i", 0x22);
+	PTEST("% 05d", 5);
+	PTEST("%0#7x", 0xaef);
+	PTEST("%#07X", 0x2a7);
 
 	close(fd);
 	eprintf("-----------------\n");
