@@ -188,19 +188,27 @@ int	main()
 	PTEST("%i\n", -1);
 	PTEST("%isadfsadf%d", -1, 34);
 	PTEST("\tadswfdsf%ifdf%ddfdfsf", 0, 0xfa1afe1);
+	PTEST("%d\n", 122342342423);
 
 	SECTION_PRINT("unsigned integers(%u)");
 	PTEST("%u", -1);
 	PTEST("%u", 0);
 	PTEST("%u", 0x7fffffff);
 	PTEST("%u", 2222222222);
+	PTEST("%u", 122342342423);
 	PTEST("%uuuuu%uuuuuuuujjsdf%ufsdf\n", 2222222222, 1, -4545);
 
+	SECTION_PRINT("throwing a bunch of stuff and seeing what happens");
+	PTEST("asdfasdf%%%%pdf%pdfsf%d ddfsdfsdfd%isadf%c\n", &fd, fd, 345, 0);
+	PTEST("____%%%XxXXsdfs%x", fd, fd);
+
+	eprintf("\n");
 	SECTION_PRINT("BONUS BONUS BONUS BONUS!!!");
 	SECTION_PRINT("% d and %+d");
 	PTEST("% d% d", 24, -24);
 	PTEST("%+d%+d", 24, -24);
-	PTEST("% +d%+ d", 2, 2);
+	PTEST("% d%+d", 0, 0);
+	PTEST("% +d%+ d", 3, 3);
 	PTEST("%+ dfsdfn%+ i\n", 24, -24);
 	PTEST("___%++++    ++++ ifsdfn%+ + +i", 0x3423424, -24);
 	PTEST("mmmmmm\r\7%++++    ++++ ifsdfn%+ + +i", -0x3423424, 54);
@@ -212,12 +220,16 @@ int	main()
 	PTEST("%#x%X", 1, 0xbaaaa);
 	PTEST("     ffsdf%#################Xdffff%##############xdfddfsdfsdfs", 0xfe012c, 0xfaef);
 
-
-	/*
-	PTEST("asdf asdf asdf%pdfdfsf%dddfsdfsdfd%isadf\n", &fd, fd, 345);
-	PTEST("%u\n", 0x80000001);
-	PTEST("%x%X\n", 0x73434, -234946);
-	 */
+	SECTION_PRINT("basic mimimum field width(%5s)");
+	PTEST("%5d", 2);
+	PTEST("%1d", 2);
+	PTEST("%0d", 2);
+	PTEST("%256d", 2);
+	PTEST("%5d", 22222222);
+	PTEST("%5s", "hi");
+	PTEST("%5s", "haiiii!!! UwU");
+	PTEST("%+5d, %+5d", 22, -22);
+	PTEST("% 5d", 22);
 
 	close(fd);
 	eprintf("-----------------\n");
