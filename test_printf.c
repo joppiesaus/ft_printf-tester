@@ -126,6 +126,9 @@ int	main()
 	int	fd;
 	int	a, b;
 
+	//printf("%8+-.5d_\n", 2555559);
+	//return (0);
+
 	SECTION_PRINT("let the PRINTF TESTING commence! ");
 	ptest_init(&fd);
 
@@ -279,7 +282,44 @@ int	main()
 	PTEST("%+05d", -34129);
 	PTEST("%0#7x", 0xaef);
 	PTEST("%#07X", 0x2a7);
-	PTEST("%025p", &fd);
+	PTEST("%25p", &fd);
+
+	SECTION_PRINT("basic precision %.<int>d");
+	PTEST("%.4d", -4);
+	PTEST("%.4d", 55555);
+	PTEST("%.4d", 55);
+	PTEST("%.d", 5);
+	PTEST("%.4x", -4);
+	PTEST("%.4X", 55555);
+	PTEST("%.4X", 55);
+	PTEST("%.x", 5);
+	PTEST("%5.4d", -4);
+	PTEST("%5.4d", 4);
+	PTEST("%5.4d", 0);
+	PTEST("%5.4d", 234235);
+	PTEST("%5.4i", 52);
+	PTEST("%5.4u", 52);
+	PTEST("%5.u", 52);
+	PTEST("%5.654u", 52);
+	PTEST("%2.1d", -1);
+	PTEST("%5.4c", 'h');
+
+	SECTION_PRINT("basic precision with %s");
+	PTEST("%.s", "hi");
+	PTEST("%.4s", "hi");
+	PTEST("%.3s", "hello!");
+
+	SECTION_PRINT("precision with ");
+	PTEST("%06d.4", -56);
+	PTEST("%+06d.4", 956);
+	PTEST("%+-06d.4", 95666);
+	PTEST("%+-6d.4", 96);
+	PTEST("% -06d.4", 95666);
+	PTEST("% -6d.4", 96);
+	PTEST("% -06d.1", 95666);
+	PTEST("% -6d.1", 96);
+	PTEST("%#x-6d.1", 96);
+	PTEST("%# x-6d.1", 96456345);
 
 	close(fd);
 	eprintf("-----------------\n");
