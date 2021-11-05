@@ -255,9 +255,17 @@ int	main()
 	SECTION_PRINT("min. field width with 0 flag");
 	PTEST("%05d", 5);
 	PTEST("%05d", 512);
+	PTEST("%05d", -5);
+	PTEST("%05d", -555);
+	PTEST("%05d", -5556);
+	PTEST("%05d", -55569);
 	PTEST("%0000005s", "hi");
 	PTEST("%0-5d", 5);
 	PTEST("%-05d", 512);
+	PTEST("%0-5d", -5);
+	PTEST("%0-5d", -555);
+	PTEST("%0-5d", -5556);
+	PTEST("%0-5d", -55569);
 	PTEST("%0000-05s", "hi");
 
 	/* this took me a while to fix for my own printf... xD */
@@ -266,6 +274,9 @@ int	main()
 	PTEST("%0+5d", 51);
 	PTEST("%+05i", 0x22);
 	PTEST("% 05d", 5);
+	PTEST("% 05d", -12);
+	PTEST("% 05d", -3412);
+	PTEST("%+05d", -34129);
 	PTEST("%0#7x", 0xaef);
 	PTEST("%#07X", 0x2a7);
 	PTEST("%025p", &fd);
