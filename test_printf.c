@@ -21,6 +21,7 @@ int	ft_printf(const char *format, ...);
 // prints a kind message, then exits
 void	m_exit()
 {
+	eprintf("----------------------------------------\n");
 	eprintf("Mission failed, we'll get 'em next time!\n");
 	exit(1);
 }
@@ -93,7 +94,7 @@ int	do_diff(int fd, int a, int b)
 }
 
 /* checks the difference between the two printf calls just done */
-void	check_diff(int fd, int a, int b)
+void	check_diff(int fd, int a, int b, int *went_wrong)
 {
 	int	should_exit = do_diff(fd, a, b);
 	
@@ -102,8 +103,12 @@ void	check_diff(int fd, int a, int b)
 		eprintf("return value FAIL: printf: %d, ft_printf returns %d.\n", a, b);
 		should_exit = 1;
 	}
-	if (should_exit && EXIT_WHEN_FAIL)
-		m_exit();
+	if (should_exit)
+	{
+		*went_wrong = 1;
+		if (EXIT_WHEN_FAIL)
+			m_exit();
+	}
 }
 
 #define	M_PTEST(line, ...) (\
@@ -114,7 +119,7 @@ void	check_diff(int fd, int a, int b)
 	b = ft_printf(__VA_ARGS__);\
 	fflush(stdout);\
 	\
-	check_diff(fd, a, b);\
+	check_diff(fd, a, b, &failed);\
 })
 
 #define PTEST(...) (M_PTEST(__LINE__, __VA_ARGS__))
@@ -125,9 +130,7 @@ int	main()
 {
 	int	fd;
 	int	a, b;
-
-	//printf("%8+-.5d_\n", 2555559);
-	//return (0);
+	int failed = 0;
 
 	SECTION_PRINT("let the PRINTF TESTING commence! ");
 	ptest_init(&fd);
@@ -159,7 +162,8 @@ int	main()
 	PTEST("%s%s", "h", "\n");
 	PTEST("%s%s\n", "sdfd\0fs", "asdfasdf");
 	PTEST("hello, %s\n", "\0");
-	eprintf("NOTE: next test is implementation dependent, only should fail if nullptr is not accounted for.\n");
+	eprintf("NOTE: next test is implementation dependent, only should fail if nullptr\n");
+	eprintf("is not accounted for(i.e. no (nil), (null), or (null pointer)).\n");
 	PTEST("super cool string: %s", (char *)0);
 
 	SECTION_PRINT("pointers(%p)");
@@ -218,6 +222,13 @@ int	main()
 	PTEST("___%++++    ++++ ifsdfn%+ + +i", 0x3423424, -24);
 	PTEST("mmmmmm\r\7%++++    ++++ ifsdfn%+ + +i", -0x3423424, 54);
 
+	eprintf("NOTE: these tests may fail, as it is technically undefined behaviour.\n");
+	eprintf("However, it would be good practice to get these tests to pass.\n");
+	PTEST("% s", "");
+	PTEST("%+s", "");
+	PTEST("% p", "");
+	PTEST("%+p", "");
+
 	SECTION_PRINT("# hash flag(prepending 0x)");
 	PTEST("%#x", 12345);
 	PTEST("%#X", 12354);
@@ -239,7 +250,7 @@ int	main()
 	PTEST("%-5d", 2);
 	PTEST("%-1d", 2);
 	PTEST("%-0d", 2);
-	PTEST("%-256d", 244);
+	PTEST("%-129d", 244);
 	PTEST("%-5d", 22222222);
 	PTEST("%-5s", "hi");
 	PTEST("%-5s", "haiiii!!! UwU");
@@ -289,6 +300,7 @@ int	main()
 	PTEST("%.4d", 55555);
 	PTEST("%.4d", 55);
 	PTEST("%.d", 5);
+	PTEST("%.0d", 5);
 	PTEST("%.4x", -4);
 	PTEST("%.4X", 55555);
 	PTEST("%.4X", 55);
@@ -306,10 +318,12 @@ int	main()
 
 	SECTION_PRINT("basic precision with %s");
 	PTEST("%.s", "hi");
+	PTEST("%.0s", "hi");
+	PTEST("%.1s", "hi");
 	PTEST("%.4s", "hi");
 	PTEST("%.3s", "hello!");
 
-	SECTION_PRINT("precision with ");
+	SECTION_PRINT("precision with 0#-+ flag");
 	PTEST("%06d.4", -56);
 	PTEST("%+06d.4", 956);
 	PTEST("%+-06d.4", 95666);
@@ -319,9 +333,37 @@ int	main()
 	PTEST("% -06d.1", 95666);
 	PTEST("% -6d.1", 96);
 	PTEST("%#x-6d.1", 96);
-	PTEST("%# x-6d.1", 96456345);
+	PTEST("%#x-6.1d", 96456345);
+
+	PTEST("% 6.4d", -56);
+	PTEST("%+6.4d", 956);
+	PTEST("%09.4d", -56);
+	PTEST("%+09.4d", 956);
+
+	PTEST("%+-06.4d", 95666);
+	PTEST("%+-6.4d", 96);
+	PTEST("% -06.4d", 95666);
+	PTEST("% -6.4d", 96);
+	PTEST("% -06.1d", 95666);
+	PTEST("% -6.1d", 96);
+	PTEST("%#x-6.1d", 96);
+	PTEST("%#x-6.1d", 96456345);
+	PTEST("%#-6.1x", 96);
+	PTEST("%#-6.1x", 96456345);
+
+	PTEST("%8.3s", "hai!");
+	PTEST("%-8.3s", "hai!");
+
+	SECTION_PRINT("a bunch of stuff at once");
+	PTEST("%+-16.5d_\n", 2555559);
+	PTEST("%+-16.5d_\n", -2555559);
+	PTEST("%0-15.5d_\n", 559);
+	PTEST("%0-15.5d %-15p XD\n", 559, &fd);
+	PTEST("I like %%%#12x_and_%-4.3s\n", 0xfa1afe1, "pizza");
 
 	close(fd);
+	if (failed)
+		m_exit();
 	eprintf("-----------------\n");
 	eprintf("all OK! good job!\n");
 	return (0);
