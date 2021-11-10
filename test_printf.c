@@ -52,28 +52,43 @@ void	ptest_init(int *fd)
 	}
 }
 
-int	do_diff(int fd, int a, int b)
+int	do_diff(int fd, int a, int b, off_t pos_before_test)
 {
 	char	buf_a[BUF_SIZE];
 	char	buf_b[BUF_SIZE];
 	ssize_t	i;
+	int		real_b;
+	int		failed;
 
-
+	failed = 0;
 	memset(buf_a, 0, BUF_SIZE);
 	memset(buf_b, 0, BUF_SIZE);
-	if (lseek(fd, (off_t)(-(a + b)), SEEK_END) == -1)
+
+	real_b = lseek(fd, 0, SEEK_CUR);
+	if (real_b == -1)
+	{
+		m_fatal_error("lseek");
+	}
+	real_b = real_b - pos_before_test - a;
+
+	if (lseek(fd, (off_t)(-(a + real_b)), SEEK_END) == -1)
 	{
 		m_fatal_error("lseek");
 	}
 
-	i = read(fd, buf_b, b);
+	i = read(fd, buf_b, real_b);
 	if (i == -1)
 	{
 		m_fatal_error("read");
 	}
-	else if (i != b)
+	else if (i != real_b)
 	{
-		eprintf("expected read failed: expected %d, got %zd\n", b, i);
+		eprintf("expected read failed: expected %d, got %zd\n", real_b, i);
+	}
+	if (b != real_b)
+	{
+		eprintf("return value FAIL: ft_printf says it wrote %d bytes, actually writes %d\n", b, real_b);
+		failed = 1;
 	}
 	i = read(fd, buf_a, a);
 	if (i == -1)
@@ -87,16 +102,23 @@ int	do_diff(int fd, int a, int b)
 	if (strncmp(buf_a, buf_b, BUF_SIZE) != 0)
 	{
 		eprintf("FAIL:\n\nprintf:    %s\nft_printf: %s\n\n", buf_a, buf_b);
-		return (1);
+		failed = 1;
 	}
+	else if (failed)
+	{
+		eprintf("Output is OK though\n");
+	}
+	if (failed)
+		return (failed);
 	eprintf("OK\n");
 	return (0);
 }
 
 /* checks the difference between the two printf calls just done */
-void	check_diff(int fd, int a, int b, int *went_wrong)
+void	check_diff(int fd, int a, int b, int *went_wrong,
+	off_t pos_before_test)
 {
-	int	should_exit = do_diff(fd, a, b);
+	int	should_exit = do_diff(fd, a, b, pos_before_test);
 	
 	if (a != b)
 	{
@@ -114,12 +136,13 @@ void	check_diff(int fd, int a, int b, int *went_wrong)
 #define	M_PTEST(line, ...) (\
 {\
 	eprintf("line %-5d: ", line);\
+	pos_before_test = lseek(fd, 0, SEEK_CUR);\
 	a = printf(__VA_ARGS__);\
 	\
 	b = ft_printf(__VA_ARGS__);\
 	fflush(stdout);\
 	\
-	check_diff(fd, a, b, &failed);\
+	check_diff(fd, a, b, &failed, pos_before_test);\
 })
 
 #define PTEST(...) (M_PTEST(__LINE__, __VA_ARGS__))
@@ -128,9 +151,10 @@ void	check_diff(int fd, int a, int b, int *went_wrong)
 
 int	main()
 {
-	int	fd;
-	int	a, b;
-	int failed = 0;
+	int		fd;
+	int		a, b;
+	int		failed = 0;
+	off_t	pos_before_test;
 
 	SECTION_PRINT("let the PRINTF TESTING commence! ");
 	ptest_init(&fd);
