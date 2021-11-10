@@ -149,14 +149,20 @@ void	check_diff(int fd, int a, int b, int *went_wrong,
 
 #define SECTION_PRINT(s) eprintf("=====    %s    =====\n", s)
 
-int	main()
+int	main(int argc, char **argv)
 {
 	int		fd;
 	int		a, b;
 	int		failed = 0;
+	int		mandatory_only = 1;
 	off_t	pos_before_test;
 
-	SECTION_PRINT("let the PRINTF TESTING commence! ");
+	if (argc >= 2 && (*argv[1] == 'b' || *argv[1] == 'a' || *argv[1] == 'e'))
+	{
+		mandatory_only = 0;
+	}
+
+	SECTION_PRINT("let the PRINTF TESTING commence!");
 	ptest_init(&fd);
 
 	SECTION_PRINT("just literal string");
@@ -171,9 +177,6 @@ int	main()
 	PTEST("%%%%%%\n");
 	PTEST("%%%%%%%");
 	PTEST("%%%%%%%\n");
-
-	//SECTION_PRINT("basic invalid arguments");
-	//PTEST("hoi %S\n", "hi");
 
 	SECTION_PRINT("%c stuff");
 	PTEST("%c", 'h');
@@ -234,6 +237,9 @@ int	main()
 	SECTION_PRINT("throwing a bunch of stuff and seeing what happens");
 	PTEST("asdfasdf%%%%pdf%pdfsf%d ddfsdfsdfd%isadf%c\n", &fd, fd, 345, 0);
 	PTEST("____%%%XxXXsdfs%x", fd, fd);
+
+	if (mandatory_only)
+		goto end;
 
 	eprintf("\n");
 	SECTION_PRINT("BONUS BONUS BONUS BONUS!!!");
@@ -354,17 +360,12 @@ int	main()
 	PTEST("%+-06d.4", 95666);
 	PTEST("%+-6d.4", 96);
 	PTEST("% -06d.4", 95666);
-	PTEST("% -6d.4", 96);
-	PTEST("% -06d.1", 95666);
-	PTEST("% -6d.1", 96);
 	PTEST("%#x-6d.1", 96);
 	PTEST("%#x-6.1d", 96456345);
-
 	PTEST("% 6.4d", -56);
 	PTEST("%+6.4d", 956);
 	PTEST("%09.4d", -56);
 	PTEST("%+09.4d", 956);
-
 	PTEST("%+-06.4d", 95666);
 	PTEST("%+-6.4d", 96);
 	PTEST("% -06.4d", 95666);
@@ -386,6 +387,7 @@ int	main()
 	PTEST("%0-15.5d %-15p XD\n", 559, &fd);
 	PTEST("I like %%%#12x_and_%-4.3s\n", 0xfa1afe1, "pizza");
 
+end:
 	close(fd);
 	if (failed)
 		m_exit();
