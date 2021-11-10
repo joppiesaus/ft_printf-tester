@@ -224,15 +224,16 @@ int	main()
 
 	eprintf("NOTE: these tests may fail, as it is technically undefined behaviour.\n");
 	eprintf("However, it would be good practice to get these tests to pass.\n");
-	PTEST("% s", "");
-	PTEST("%+s", "");
-	PTEST("% p", "");
-	PTEST("%+p", "");
+	PTEST("_% s_", "");
+	PTEST("_%+s_", "");
+	PTEST("_% p", &fd);
+	PTEST("_%+p", &fd);
 
 	SECTION_PRINT("# hash flag(prepending 0x)");
 	PTEST("%#x", 12345);
 	PTEST("%#X", 12354);
 	PTEST("%#x", 0);
+	PTEST("%#X", 0);
 	PTEST("%#x%X", 1, 0xbaaaa);
 	PTEST("     ffsdf%#################Xdffff%##############xdfddfsdfsdfs", 0xfe012c, 0xfaef);
 
