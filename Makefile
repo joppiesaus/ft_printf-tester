@@ -3,7 +3,7 @@ FT_PRINTF_PATH =..
 
 DEPS = test_printf.c
 NAME = test
-CFLAGS := -Wall -Wextra
+CFLAGS := -Wall -Wextra -fsanitize=address
 
 all: $(NAME)
 
