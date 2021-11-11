@@ -3,7 +3,8 @@ FT_PRINTF_PATH =..
 
 DEPS = test_printf.c
 NAME = test
-CFLAGS := -Wall -Wextra -fsanitize=address
+# does your printf crash? Add -fsanitize=address here to see more info!
+CFLAGS := -Wall -Wextra -Wno-format
 
 all: $(NAME)
 

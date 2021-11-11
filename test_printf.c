@@ -101,7 +101,7 @@ int	do_diff(int fd, int a, int b, off_t pos_before_test)
 	}
 	if (strncmp(buf_a, buf_b, BUF_SIZE) != 0)
 	{
-		eprintf("FAIL:\n\nprintf:    %s\nft_printf: %s\n\n", buf_a, buf_b);
+		eprintf("FAIL:\n\nprintf:    [%s]\nft_printf: [%s]\n\n", buf_a, buf_b);
 		failed = 1;
 	}
 	else if (failed)
@@ -304,14 +304,12 @@ int	main(int argc, char **argv)
 	PTEST("%05d", -555);
 	PTEST("%05d", -5556);
 	PTEST("%05d", -55569);
-	PTEST("%0000005s", "hi");
 	PTEST("%0-5d", 5);
 	PTEST("%-05d", 512);
 	PTEST("%0-5d", -5);
 	PTEST("%0-5d", -555);
 	PTEST("%0-5d", -5556);
 	PTEST("%0-5d", -55569);
-	PTEST("%0000-05s", "hi");
 
 	/* this took me a while to fix for my own printf... xD */
 	SECTION_PRINT("min. field width with 0 and %+ d or %x");
@@ -348,7 +346,6 @@ int	main(int argc, char **argv)
 	PTEST("%5.u", 52);
 	PTEST("%5.654u", 52);
 	PTEST("%2.1d", -1);
-	PTEST("%5.4c", 'h');
 
 	SECTION_PRINT("basic precision with %s");
 	PTEST("%.s", "hi");
@@ -380,6 +377,32 @@ int	main(int argc, char **argv)
 	PTEST("%#-6.1x", 96);
 	PTEST("%#-6.1x", 96456345);
 	PTEST("%#.5x", 55);
+	PTEST("%.d", 0);
+	PTEST("%.0d", 0);
+	PTEST("%.0d", 5);
+	PTEST("%.d", 5);
+	PTEST("%.1d", 0);
+	PTEST("%.2d", 1444);
+
+	PTEST("%01.i", 1);
+	PTEST("%03.i", 1);
+	PTEST("%01.i", 0);
+	PTEST("%01.0i", 0);
+	PTEST("%02.0i", 0);
+	PTEST("%03.0i", 0);
+	PTEST("%01.X", 0xaef5);
+	PTEST("%01.X", 0);
+	PTEST("%01.0X", 0);
+	PTEST("%02.0X", 0);
+	PTEST("%04.0X", 0);
+	PTEST("%01.x", 0xaef5);
+	PTEST("%01.x", 0);
+	PTEST("%01.0x", 0);
+	PTEST("%02.0x", 0);
+	PTEST("%04.0x", 0);
+	PTEST("%-04.d", 0);
+	PTEST("%-04.d", 20);
+	PTEST("%-25.20x", 0xfefe);
 
 	PTEST("%8.3s", "hai!");
 	PTEST("%-8.3s", "hai!");
@@ -389,7 +412,7 @@ int	main(int argc, char **argv)
 	PTEST("%+-16.5d_\n", -2555559);
 	PTEST("%0-15.5d_\n", 559);
 	PTEST("%0-15.5d %-15p XD\n", 559, &fd);
-	PTEST("I like %%%#12x_and_%-4.3s\n", 0xfa1afe1, "pizza");
+	PTEST("I %cike %%%#12x_and_%-4.3s\n", 'L', 0xfa1afe1, "pizza");
 
 end:
 	close(fd);
