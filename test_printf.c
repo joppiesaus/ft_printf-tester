@@ -330,6 +330,8 @@ int	main(int argc, char **argv)
 	PTEST("%.4d", 55);
 	PTEST("%.d", 5);
 	PTEST("%.0d", 5);
+	PTEST("%.d", 0);
+	PTEST("%.0d", 0);
 	PTEST("%.4x", -4);
 	PTEST("%.4X", 55555);
 	PTEST("%.4X", 55);
@@ -376,11 +378,7 @@ int	main(int argc, char **argv)
 	PTEST("%#x-6.1d", 96456345);
 	PTEST("%#-6.1x", 96);
 	PTEST("%#-6.1x", 96456345);
-	PTEST("%#.5x", 55);
-	PTEST("%.d", 0);
-	PTEST("%.0d", 0);
-	PTEST("%.0d", 5);
-	PTEST("%.d", 5);
+	PTEST("%#.5x", 55);;
 	PTEST("%.1d", 0);
 	PTEST("%.2d", 1444);
 
@@ -402,6 +400,11 @@ int	main(int argc, char **argv)
 	PTEST("%04.0x", 0);
 	PTEST("%-04.d", 0);
 	PTEST("%-04.d", 20);
+	PTEST("%8.d", 5);
+	PTEST("%7.0d", 5);
+	PTEST("%8.d", 0);
+	PTEST("%6.0d", 0);
+	PTEST("%2.0d", 3444);
 	PTEST("%-25.20x", 0xfefe);
 
 	PTEST("%8.3s", "hai!");
