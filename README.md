@@ -29,3 +29,5 @@ For bonus:
 ```
 make; ./test b
 ```
+
+Further notes: the printf and ft_printf output is saved to `output.txt`.
