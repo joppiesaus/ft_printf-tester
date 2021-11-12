@@ -14,19 +14,20 @@ Also, I am not sure if it checks every case which needs to be checked. This test
 
 ## Installing
 just clone this repo in your printf folder.
-```git clone https://github.com/joppiesaus/ft_printf-tester;
+```sh
+git clone https://github.com/joppiesaus/ft_printf-tester
 cd ft_printf-tester
 ```
 May you want it somewhere else, just change `FT_PRINTF_PATH` in the `Makefile`.
 
 ## Running
 `make` and run `test`. When you change your printf, you must `make` again.
-```
+```sh
 make; ./test
 ```
 
 For bonus:
-```
+```sh
 make; ./test b
 ```
 
