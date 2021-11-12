@@ -1,4 +1,4 @@
-/* TODO: mandatory part, actually correct result, compact the tester */
+/* TODO: compact the tester */
 
 #include <stdio.h> /* printf, obviously */
 #include <stdlib.h> /* exit */
