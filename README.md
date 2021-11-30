@@ -2,7 +2,7 @@
 A simple tester for 42's ft_printf project.
 
 **Note**: this was written in November 2021. It might be that this version becomes outdated in the future, as I have no intention to update it myself.
-Also, I am not sure if it checks every case which needs to be checked. This tester isn't perfect; I wrote it so I could test my own printf which I was working on, and it helped me, and I am sharing it with the world.
+Also, I am not sure if it checks every case which needs to be checked. This tester isn't perfect; I wrote it so I could test my own printf which I was working on, and it helped me, and I am sharing it with the world. I **highly** encourage you to write your own tester, especially if you are doing the bonus, it was great fun to write and useful.
 
 
 ## Features
@@ -11,6 +11,7 @@ Also, I am not sure if it checks every case which needs to be checked. This test
  - bonus
  - does not check undefined behaviour
  - if your printf segfaults, the tester segfaults.
+ - shows your output vs expected output when wrong
 
 ## Installing
 just clone this repo in your printf folder.
