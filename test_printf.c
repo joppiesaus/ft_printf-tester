@@ -6,12 +6,12 @@
 
 #include <unistd.h> /* dup, read */
 #include <sys/stat.h> /* redir */
-#include <fcntl.h> /* fchmod etc. */
+#include <fcntl.h> /* open etc. */
 
 int	ft_printf(const char *format, ...);
 
 #define EXIT_WHEN_FAIL (0) // set to 1 if you want the test to stop when it fails.
-#define TEST_OUTPUT_FILE_NAME ("output.txt") // File name to write results to
+#define TEST_OUTPUT_FILE_NAME "output.txt" // File name to write results to
 
 // the buffer size. If a printf tests exceeds this buffer, idk what happens.
 #define BUF_SIZE (4096)
@@ -35,15 +35,11 @@ void	m_fatal_error(const char *s)
 
 void	ptest_init(int *fd)
 {
-	*fd = open(TEST_OUTPUT_FILE_NAME, O_RDWR | O_CREAT | O_APPEND | O_TRUNC);
+	*fd = open(TEST_OUTPUT_FILE_NAME, O_RDWR | O_CREAT | O_APPEND | O_TRUNC,
+		0664);
 	if (*fd == -1)
 	{
-		m_fatal_error("open");
-	}
-	// change perms so we can edit it later
-	if (fchmod(*fd, 0644) == -1)
-	{
-		perror("fchmod");
+		m_fatal_error("open "TEST_OUTPUT_FILE_NAME);
 	}
 	// redirect stdout to the file
 	if (dup2(*fd, 1) == -1)
