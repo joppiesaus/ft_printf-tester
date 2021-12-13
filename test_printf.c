@@ -169,8 +169,12 @@ int	main(int argc, char **argv)
 
 	SECTION_PRINT("% screwery");
 	PTEST("%%\n");
-	PTEST("%");
 	PTEST("%%%%%%\n");
+	PTEST("%%a%%a%%");
+	PTEST("%%%%%%%%");
+	eprintf("NOTE: these tests may fail, as it is technically undefined behaviour.\n");
+	eprintf("However, it would be good practice to get this test to pass.\n");
+	PTEST("%");
 	PTEST("%%%%%%%");
 	PTEST("%%%%%%%\n");
 
