@@ -180,6 +180,7 @@ int	main(int argc, char **argv)
 
 	SECTION_PRINT("%c stuff");
 	PTEST("%c", 'h');
+	PTEST("%c", 0x220);
 	PTEST("%c", -1);
 	PTEST("sdf sdfsdf sd %c\t\v%c", 'h', 'a');
 	PTEST("%c%c\n", '\0', '~');
